@@ -8,30 +8,523 @@
 
     <title>Sell an Item | CampusMarket</title>
 
-    <!-- Bootstrap CSS -->
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Our Custom CSS -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Main CSS -->
     <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        :root {
+            --cm-green: #159653;
+            --cm-dark: #123d2c;
+            --cm-light: #eaf7ee;
+            --cm-text: #17252e;
+            --cm-muted: #687780;
+            --cm-border: #e5ece8;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--cm-text);
+            background: #f7faf8;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* NAVBAR */
+
+        .cm-navbar {
+            background: #fff;
+            padding: 16px 0;
+            border-bottom: 1px solid #edf1ee;
+        }
+
+        .cm-brand {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--cm-dark);
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+        .cm-brand:hover {
+            color: var(--cm-dark);
+        }
+
+        .cm-brand span:last-child {
+            color: var(--cm-green);
+        }
+
+        .cm-brand-icon {
+            width: 39px;
+            height: 39px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            background: var(--cm-green);
+            border-radius: 11px;
+            font-size: 17px;
+        }
+
+        .cm-navbar .nav-link {
+            color: #52615b;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 0 10px;
+            transition: 0.2s;
+        }
+
+        .cm-navbar .nav-link:hover,
+        .cm-navbar .nav-link.active {
+            color: var(--cm-green);
+        }
+
+        .cm-login {
+            background: var(--cm-green);
+            color: white;
+            padding: 11px 22px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 700;
+            border: none;
+        }
+
+        .cm-login:hover {
+            background: var(--cm-dark);
+            color: white;
+        }
+
+        /* PAGE HERO */
+
+        .sell-hero {
+            background: linear-gradient(120deg, #123d2c, #176c43);
+            padding: 75px 0 85px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sell-hero::after {
+            content: "";
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            border: 55px solid rgba(255,255,255,0.06);
+            border-radius: 50%;
+            right: -90px;
+            top: -120px;
+        }
+
+        .sell-hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-label {
+            display: inline-block;
+            background: rgba(255,255,255,0.12);
+            color: #c8f5d7;
+            padding: 9px 15px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.3px;
+            margin-bottom: 20px;
+        }
+
+        .sell-hero h1 {
+            font-size: clamp(34px, 5vw, 53px);
+            line-height: 1.15;
+            font-weight: 800;
+            max-width: 650px;
+            margin-bottom: 18px;
+        }
+
+        .sell-hero h1 span {
+            color: #79e2a5;
+        }
+
+        .sell-hero p {
+            color: #d8e9df;
+            max-width: 560px;
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 0;
+        }
+
+        .hero-icon-card {
+            width: 190px;
+            height: 190px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+            transform: rotate(-5deg);
+        }
+
+        .hero-icon-card i {
+            font-size: 85px;
+            color: #a4efbf;
+        }
+
+        /* MAIN SECTION */
+
+        .sell-main {
+            padding: 65px 0 85px;
+        }
+
+        .section-heading {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .section-heading .small-title {
+            color: var(--cm-green);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+        }
+
+        .section-heading h2 {
+            color: var(--cm-dark);
+            font-size: 30px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .section-heading p {
+            color: var(--cm-muted);
+            font-size: 14px;
+        }
+
+        /* FORM CARD */
+
+        .sell-layout {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .sell-form-container {
+            background: white;
+            border: 1px solid var(--cm-border);
+            border-radius: 18px;
+            padding: 38px;
+            box-shadow: 0 10px 35px rgba(20, 60, 40, 0.045);
+        }
+
+        .form-top {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--cm-border);
+            margin-bottom: 28px;
+        }
+
+        .form-top-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 13px;
+            background: var(--cm-light);
+            color: var(--cm-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .form-top h3 {
+            font-size: 19px;
+            font-weight: 800;
+            color: var(--cm-dark);
+            margin: 0 0 4px;
+        }
+
+        .form-top p {
+            font-size: 12px;
+            color: var(--cm-muted);
+            margin: 0;
+        }
+
+        .form-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #293a32;
+            margin-bottom: 9px;
+        }
+
+        .form-control,
+        .form-select {
+            min-height: 49px;
+            border: 1px solid #dfe8e2;
+            border-radius: 9px;
+            font-size: 13px;
+            padding: 12px 14px;
+            color: var(--cm-text);
+            box-shadow: none !important;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--cm-green);
+            box-shadow: 0 0 0 3px rgba(21,150,83,0.09) !important;
+        }
+
+        textarea.form-control {
+            min-height: 125px;
+            resize: vertical;
+        }
+
+        .form-control::placeholder {
+            color: #a4b0aa;
+        }
+
+        .form-text {
+            color: #87938d;
+            font-size: 11px;
+            margin-top: 8px;
+        }
+
+        .form-check {
+            background: #f5faf6;
+            border: 1px solid #e1eee5;
+            padding: 15px 15px 15px 42px;
+            border-radius: 10px;
+        }
+
+        .form-check-input {
+            margin-top: 3px;
+            cursor: pointer;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--cm-green);
+            border-color: var(--cm-green);
+        }
+
+        .form-check-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #385044;
+            cursor: pointer;
+        }
+
+        /* FORM DIVIDERS */
+
+        .form-subheading {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--cm-dark);
+            font-size: 14px;
+            font-weight: 800;
+            margin: 30px 0 20px;
+        }
+
+        .form-subheading i {
+            color: var(--cm-green);
+        }
+
+        .form-subheading::after {
+            content: "";
+            height: 1px;
+            background: #edf1ee;
+            flex: 1;
+        }
+
+        /* SUBMIT */
+
+        .publish-btn {
+            background: var(--cm-green);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 14px;
+            font-weight: 800;
+            transition: 0.2s;
+        }
+
+        .publish-btn:hover {
+            background: var(--cm-dark);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .publish-btn i {
+            margin-right: 8px;
+        }
+
+        .form-note {
+            text-align: center;
+            color: var(--cm-muted);
+            font-size: 11px;
+            margin-top: 17px;
+            margin-bottom: 0;
+        }
+
+        /* SELLING TIPS */
+
+        .selling-tips {
+            background: #eef8f1;
+            border: 1px solid #e0eee4;
+            padding: 20px;
+            border-radius: 13px;
+            margin-top: 25px;
+        }
+
+        .selling-tips h5 {
+            color: var(--cm-dark);
+            font-size: 13px;
+            font-weight: 800;
+            margin-bottom: 13px;
+        }
+
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            color: #52665a;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .tip-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .tip-item i {
+            color: var(--cm-green);
+            margin-top: 2px;
+        }
+
+        /* FOOTER */
+
+        .cm-footer {
+            background: #103b2b;
+            color: white;
+            padding: 45px 0 20px;
+        }
+
+        .footer-brand {
+            font-size: 23px;
+            font-weight: 800;
+            margin-bottom: 13px;
+        }
+
+        .footer-brand span {
+            color: #64d995;
+        }
+
+        .cm-footer p {
+            color: #c0d1c7;
+            font-size: 13px;
+            line-height: 1.8;
+            max-width: 350px;
+        }
+
+        .footer-heading {
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .footer-link {
+            display: block;
+            color: #c0d1c7;
+            font-size: 12px;
+            margin-bottom: 11px;
+        }
+
+        .footer-link:hover {
+            color: #76e2a5;
+        }
+
+        .copyright {
+            border-top: 1px solid rgba(255,255,255,0.12);
+            margin-top: 30px;
+            padding-top: 20px;
+            text-align: center;
+            color: #a9c1b2;
+            font-size: 11px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 767px) {
+            .sell-hero {
+                padding: 55px 0;
+            }
+
+            .hero-icon-card {
+                width: 125px;
+                height: 125px;
+                border-radius: 25px;
+                margin-top: 35px;
+            }
+
+            .hero-icon-card i {
+                font-size: 55px;
+            }
+
+            .sell-main {
+                padding: 45px 0 60px;
+            }
+
+            .sell-form-container {
+                padding: 23px 17px;
+                border-radius: 13px;
+            }
+
+            .section-heading h2 {
+                font-size: 25px;
+            }
+
+            .form-top h3 {
+                font-size: 17px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <!-- NAVIGATION BAR -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-
+    <!-- NAVIGATION -->
+    <nav class="navbar navbar-expand-lg cm-navbar sticky-top">
         <div class="container">
 
-            <a class="navbar-brand fw-bold" href="index.html">
-                Campus<span>Market.</span>
+            <a href="index.html" class="cm-brand">
+                <span class="cm-brand-icon">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </span>
+                Campus<span>Market</span>
             </a>
 
             <button class="navbar-toggler" type="button"
                 data-bs-toggle="collapse"
-                data-bs-target="#navbarMenu">
+                data-bs-target="#navbarMenu"
+                aria-controls="navbarMenu"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
 
                 <span class="navbar-toggler-icon"></span>
-
             </button>
 
             <div class="collapse navbar-collapse" id="navbarMenu">
@@ -43,7 +536,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="shop.html">Shop</a>
+                        <a class="nav-link" href="shop.html">Browse Products</a>
                     </li>
 
                     <li class="nav-item">
@@ -52,228 +545,326 @@
 
                 </ul>
 
-                <a href="login.html" class="btn login-btn">
+                <a href="login.html" class="btn cm-login">
+                    <i class="fa-regular fa-user me-1"></i>
                     Login / Sign Up
                 </a>
 
             </div>
-
         </div>
-
     </nav>
 
 
-    <!-- SELL PAGE HEADER -->
-    <section class="sell-header">
+    <!-- HERO -->
+    <section class="sell-hero">
 
-        <div class="container">
+        <div class="container sell-hero-content">
 
-            <p class="sell-small-heading">CAMPUS MARKETPLACE</p>
+            <div class="row align-items-center">
 
-            <h1>Give Your Items a <span>Second Life.</span></h1>
+                <div class="col-lg-8">
 
-            <p>
-                Have something you no longer need?
-                List it on CampusMarket and connect with other students.
-            </p>
+                    <span class="hero-label">
+                        <i class="fa-solid fa-store me-2"></i>
+                        CAMPUS MARKETPLACE
+                    </span>
+
+                    <h1>
+                        Give Your Items a
+                        <span>Second Life.</span>
+                    </h1>
+
+                    <p>
+                        Turn unused items into opportunities.
+                        List your products on CampusMarket and connect
+                        with students looking for exactly what you have.
+                    </p>
+
+                </div>
+
+                <div class="col-lg-4 text-center">
+
+                    <div class="hero-icon-card">
+                        <i class="fa-solid fa-box-open"></i>
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
 
     </section>
 
 
-    <!-- SELL PRODUCT FORM -->
-    <section class="sell-section">
+    <!-- SELL FORM -->
+    <section class="sell-main">
 
         <div class="container">
 
-            <div class="sell-form-container">
+            <div class="section-heading">
+
+                <p class="small-title">START SELLING TODAY</p>
 
                 <h2>List Your Item</h2>
 
-                <p class="form-intro">
-                    Provide the details below to list your product.
+                <p>
+                    Complete the details below to introduce your product
+                    to the CampusMarket community.
                 </p>
 
-                <form id="sellForm">
-
-                    <!-- PRODUCT NAME -->
-                    <div class="mb-4">
-
-                        <label for="productName" class="form-label">
-                            Product Name
-                        </label>
-
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="productName"
-                            placeholder="e.g. Scientific Calculator"
-                            maxlength="100"
-                            required>
-
-                    </div>
+            </div>
 
 
-                    <!-- CATEGORY -->
-                    <div class="mb-4">
+            <div class="sell-layout">
 
-                        <label for="productCategory" class="form-label">
-                            Product Category
-                        </label>
+                <div class="sell-form-container">
 
-                        <select
-                            class="form-select"
-                            id="productCategory"
-                            required>
+                    <div class="form-top">
 
-                            <option value="">Choose a category</option>
-                            <option value="Books">Books</option>
-                            <option value="Electronics">Electronics</option>
-                            <option value="Fashion">Fashion</option>
-                            <option value="Home">Home</option>
+                        <div class="form-top-icon">
+                            <i class="fa-solid fa-clipboard-list"></i>
+                        </div>
 
-                        </select>
-
-                    </div>
-
-
-                    <!-- PRICE -->
-                    <div class="mb-4">
-
-                        <label for="productPrice" class="form-label">
-                            Price (GH₵)
-                        </label>
-
-                        <input
-                            type="number"
-                            class="form-control"
-                            id="productPrice"
-                            placeholder="Enter price"
-                            min="0"
-                            step="0.01">
-
-                        <div class="form-text">
-                            Leave the price empty if you want to donate the item.
+                        <div>
+                            <h3>Product Information</h3>
+                            <p>Enter accurate details about the item you want to list.</p>
                         </div>
 
                     </div>
 
 
-                    <!-- DONATION OPTION -->
-                    <div class="form-check mb-4">
+                    <form id="sellForm">
 
-                        <input
-                            class="form-check-input"
-                            type="checkbox"
-                            id="donateItem">
+                        <!-- PRODUCT DETAILS -->
 
-                        <label class="form-check-label" for="donateItem">
-                            I want to donate this item for free.
-                        </label>
-
-                    </div>
-
-
-                    <!-- DESCRIPTION -->
-                    <div class="mb-4">
-
-                        <label for="productDescription" class="form-label">
-                            Product Description
-                        </label>
-
-                        <textarea
-                            class="form-control"
-                            id="productDescription"
-                            rows="5"
-                            maxlength="1000"
-                            placeholder="Describe your item, its condition and important details..."
-                            required></textarea>
-
-                    </div>
-
-
-                    <!-- PRODUCT IMAGE -->
-                    <div class="mb-4">
-
-                        <label for="productImage" class="form-label">
-                            Upload Product Image
-                        </label>
-
-                        <input
-                            type="file"
-                            class="form-control"
-                            id="productImage"
-                            accept="image/*"
-                            required>
-
-                        <div class="form-text">
-                            Upload a clear picture of your item.
+                        <div class="form-subheading">
+                            <i class="fa-solid fa-box"></i>
+                            Product Details
                         </div>
 
+                        <div class="mb-4">
+
+                            <label for="productName" class="form-label">
+                                Product Name
+                            </label>
+
+                            <input type="text"
+                                class="form-control"
+                                id="productName"
+                                placeholder="e.g. Scientific Calculator"
+                                maxlength="100"
+                                required>
+
+                        </div>
+
+
+                        <div class="mb-4">
+
+                            <label for="productCategory" class="form-label">
+                                Product Category
+                            </label>
+
+                            <select class="form-select"
+                                id="productCategory"
+                                required>
+
+                                <option value="">Choose a category</option>
+                                <option value="Books">Books</option>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Fashion">Fashion</option>
+                                <option value="Home">Home</option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="mb-4">
+
+                            <label for="productPrice" class="form-label">
+                                Price (GH₵)
+                            </label>
+
+                            <input type="number"
+                                class="form-control"
+                                id="productPrice"
+                                placeholder="Enter price"
+                                min="0"
+                                step="0.01">
+
+                            <div class="form-text">
+                                Leave the price empty if you want to donate the item.
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-check mb-4">
+
+                            <input class="form-check-input"
+                                type="checkbox"
+                                id="donateItem">
+
+                            <label class="form-check-label" for="donateItem">
+                                I want to donate this item for free.
+                            </label>
+
+                        </div>
+
+
+                        <div class="mb-4">
+
+                            <label for="productDescription" class="form-label">
+                                Product Description
+                            </label>
+
+                            <textarea class="form-control"
+                                id="productDescription"
+                                rows="5"
+                                maxlength="1000"
+                                placeholder="Describe your item, its condition and important details..."
+                                required></textarea>
+
+                            <div class="form-text">
+                                Maximum 1,000 characters.
+                            </div>
+
+                        </div>
+
+
+                        <!-- PRODUCT IMAGE -->
+
+                        <div class="form-subheading">
+                            <i class="fa-solid fa-image"></i>
+                            Product Image
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label for="productImage" class="form-label">
+                                Upload Product Image
+                            </label>
+
+                            <input type="file"
+                                class="form-control"
+                                id="productImage"
+                                accept="image/*"
+                                required>
+
+                            <div class="form-text">
+                                Upload a clear picture that shows the actual item.
+                            </div>
+
+                        </div>
+
+
+                        <!-- SELLER INFORMATION -->
+
+                        <div class="form-subheading">
+                            <i class="fa-solid fa-user"></i>
+                            Seller Information
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label for="sellerName" class="form-label">
+                                Your Name
+                            </label>
+
+                            <input type="text"
+                                class="form-control"
+                                id="sellerName"
+                                placeholder="Enter your name"
+                                maxlength="100"
+                                required>
+
+                        </div>
+
+
+                        <div class="mb-4">
+
+                            <label for="sellerPhone" class="form-label">
+                                WhatsApp Number
+                            </label>
+
+                            <input type="tel"
+                                class="form-control"
+                                id="sellerPhone"
+                                placeholder="e.g. 0241234567"
+                                required>
+
+                            <div class="form-text">
+                                Provide a number buyers can use to contact you.
+                            </div>
+
+                        </div>
+
+
+                        <div class="mb-4">
+
+                            <label for="sellerLocation" class="form-label">
+                                Your Campus Location
+                            </label>
+
+                            <input type="text"
+                                class="form-control"
+                                id="sellerLocation"
+                                placeholder="e.g. UCC, Cape Coast"
+                                required>
+
+                        </div>
+
+
+                        <!-- SUBMIT -->
+
+                        <button type="submit" class="btn publish-btn w-100">
+
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            Submit Product
+
+                        </button>
+
+                        <p class="form-note">
+                            <i class="fa-solid fa-shield-halved me-1"></i>
+                            Please ensure all product and contact information is accurate.
+                        </p>
+
+                    </form>
+
+                </div>
+
+
+                <!-- SELLING TIPS -->
+
+                <div class="selling-tips">
+
+                    <h5>
+                        <i class="fa-solid fa-lightbulb me-2"></i>
+                        Tips for a Better Listing
+                    </h5>
+
+                    <div class="tip-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Use a clear and attractive picture of your actual product.</span>
                     </div>
 
-
-                    <!-- SELLER NAME -->
-                    <div class="mb-4">
-
-                        <label for="sellerName" class="form-label">
-                            Your Name
-                        </label>
-
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="sellerName"
-                            placeholder="Enter your name"
-                            maxlength="100"
-                            required>
-
+                    <div class="tip-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Write a simple but detailed product description.</span>
                     </div>
 
-
-                    <!-- WHATSAPP NUMBER -->
-                    <div class="mb-4">
-
-                        <label for="sellerPhone" class="form-label">
-                            WhatsApp Number
-                        </label>
-
-                        <input
-                            type="tel"
-                            class="form-control"
-                            id="sellerPhone"
-                            placeholder="e.g. 0241234567"
-                            required>
-
+                    <div class="tip-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Choose the correct category for your item.</span>
                     </div>
 
-
-                    <!-- LOCATION -->
-                    <div class="mb-4">
-
-                        <label for="sellerLocation" class="form-label">
-                            Your Campus Location
-                        </label>
-
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="sellerLocation"
-                            placeholder="e.g. UCC, Cape Coast"
-                            required>
-
+                    <div class="tip-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Provide accurate contact information and campus location.</span>
                     </div>
 
-
-                    <!-- SUBMIT BUTTON -->
-                    <button type="submit" class="btn publish-btn w-100">
-
-                        Submit Product
-
-                    </button>
-
-                </form>
+                </div>
 
             </div>
 
@@ -283,34 +874,71 @@
 
 
     <!-- FOOTER -->
-    <footer class="footer">
+    <footer class="cm-footer">
 
         <div class="container">
 
-            <h4>CampusMarket.</h4>
+            <div class="row g-4">
 
-            <p>
-                Connecting students through affordable buying,
-                selling and giving.
-            </p>
+                <div class="col-lg-5 col-md-6">
 
-            <p class="copyright">
+                    <div class="footer-brand">
+                        Campus<span>Market.</span>
+                    </div>
+
+                    <p>
+                        Connecting students through affordable buying,
+                        selling and giving. Your campus, your marketplace.
+                    </p>
+
+                </div>
+
+
+                <div class="col-lg-3 col-md-6">
+
+                    <h5 class="footer-heading">Explore</h5>
+
+                    <a href="index.html" class="footer-link">Home</a>
+                    <a href="shop.html" class="footer-link">Browse Products</a>
+                    <a href="sell.html" class="footer-link">Sell an Item</a>
+
+                </div>
+
+
+                <div class="col-lg-4 col-md-6">
+
+                    <h5 class="footer-heading">Our Values</h5>
+
+                    <p>
+                        Affordable products, student connections,
+                        convenience and a supportive campus community.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="copyright">
                 © 2026 CampusMarket. All rights reserved.
-            </p>
+            </div>
 
         </div>
 
     </footer>
 
 
-   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- SCRIPTS -->
 
-<script src="js/supabase.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<script src="js/protect.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script src="js/sell.js"></script>
+    <script src="js/supabase.js"></script>
+
+    <script src="js/protect.js"></script>
+
+    <script src="js/sell.js"></script>
 
 </body>
-
 </html>
