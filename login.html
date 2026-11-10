@@ -1,104 +1,296 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Login | UCC CampusMarket</title>
+    <title>Login | CampusMarket</title>
 
-    <!-- Bootstrap CSS -->
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Google Font -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
+        :root {
+            --cm-green: #159653;
+            --cm-dark: #123d2c;
+            --cm-light: #eaf7ee;
+            --cm-text: #17252e;
+            --cm-muted: #687780;
+            --cm-border: #e5ece8;
+        }
+
         * {
             box-sizing: border-box;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #eef5ef, #f8faf8);
+            font-family: 'Inter', sans-serif;
             min-height: 100vh;
+            background: #f5f9f6;
+            color: var(--cm-text);
+            margin: 0;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* MAIN PAGE LAYOUT */
+
+        .auth-page {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        /* LEFT BRANDING PANEL */
+
+        .brand-panel {
+            background: linear-gradient(145deg, #103b2b, #176c43);
+            color: white;
+            padding: 45px 8%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-panel::before {
+            content: "";
+            position: absolute;
+            width: 430px;
+            height: 430px;
+            border: 65px solid rgba(255,255,255,0.045);
+            border-radius: 50%;
+            top: 12%;
+            right: -210px;
+        }
+
+        .brand-panel::after {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border: 45px solid rgba(255,255,255,0.04);
+            border-radius: 50%;
+            bottom: -140px;
+            left: -120px;
+        }
+
+        .brand-content,
+        .brand-footer,
+        .brand-logo {
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 11px;
+            color: white;
+            font-size: 24px;
+            font-weight: 800;
+            width: fit-content;
+        }
+
+        .brand-logo:hover {
+            color: white;
+        }
+
+        .brand-logo-icon {
+            width: 43px;
+            height: 43px;
+            background: var(--cm-green);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 25px 15px;
+            font-size: 19px;
         }
 
-        .auth-card {
-            background: #ffffff;
+        .brand-logo span:last-child {
+            color: #77e2a5;
+        }
+
+        .brand-content {
+            max-width: 490px;
+            margin: 55px auto;
+        }
+
+        .brand-label {
+            display: inline-block;
+            padding: 9px 14px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 30px;
+            color: #c6f3d6;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.4px;
+            margin-bottom: 23px;
+        }
+
+        .brand-content h1 {
+            font-size: clamp(35px, 4vw, 52px);
+            line-height: 1.16;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .brand-content h1 span {
+            color: #78e3a5;
+        }
+
+        .brand-description {
+            color: #d3e7da;
+            font-size: 14px;
+            line-height: 1.9;
+            max-width: 420px;
+        }
+
+        /* FEATURE ITEMS */
+
+        .brand-features {
+            margin-top: 35px;
+            display: flex;
+            flex-direction: column;
+            gap: 19px;
+        }
+
+        .brand-feature {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            color: #e6f3eb;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .feature-icon {
+            width: 39px;
+            height: 39px;
+            border-radius: 11px;
+            background: rgba(255,255,255,0.12);
+            color: #8ce9ae;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .brand-footer {
+            color: #bad3c3;
+            font-size: 11px;
+        }
+
+        /* RIGHT AUTH PANEL */
+
+        .auth-panel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 45px 30px;
+            background: #f8fbf9;
+        }
+
+        .auth-container {
             width: 100%;
-            max-width: 470px;
-            padding: 38px;
-            border-radius: 20px;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+            max-width: 430px;
         }
 
-        .brand-area {
-            text-align: center;
+        .mobile-brand {
+            display: none;
+        }
+
+        .auth-heading {
             margin-bottom: 30px;
         }
 
-        .ucc-logo {
-            width: 100px;
-            height: 100px;
-            object-fit: contain;
-            display: block;
-            margin: 0 auto 15px;
-        }
-
-        .brand-area h2 {
-            color: #245b37;
+        .auth-heading .welcome-label {
+            color: var(--cm-green);
+            font-size: 11px;
             font-weight: 800;
-            margin-bottom: 6px;
+            letter-spacing: 1.3px;
+            margin-bottom: 12px;
         }
 
-        .brand-area p {
-            color: #777;
+        .auth-heading h2 {
+            color: var(--cm-dark);
+            font-size: 29px;
+            font-weight: 800;
+            margin-bottom: 9px;
+        }
+
+        .auth-heading p {
+            color: var(--cm-muted);
             font-size: 13px;
-            margin-bottom: 0;
+            line-height: 1.7;
+            margin: 0;
         }
 
-        .section-title {
-            color: #245b37;
-            font-weight: 700;
-            margin-bottom: 22px;
-        }
+        /* FORM */
 
         .form-label {
-            font-size: 14px;
-            font-weight: 600;
-            color: #333;
+            color: #293a32;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 9px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper > i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9aa9a0;
+            font-size: 15px;
+            pointer-events: none;
         }
 
         .form-control {
-            padding: 12px 14px;
+            height: 51px;
+            border: 1px solid #dfe8e2;
             border-radius: 10px;
-            border: 1px solid #dce5dd;
+            background: white;
+            color: var(--cm-text);
+            font-size: 13px;
+            padding: 12px 15px 12px 43px;
+            box-shadow: none !important;
         }
 
         .form-control:focus {
-            border-color: #34834d;
-            box-shadow: 0 0 0 3px rgba(52, 131, 77, 0.12);
+            border-color: var(--cm-green);
+            box-shadow: 0 0 0 3px rgba(21,150,83,0.09) !important;
         }
 
-        /* PASSWORD EYE ICON */
+        .form-control::placeholder {
+            color: #a6b1ab;
+        }
+
+        /* PASSWORD */
 
         .password-wrapper {
             position: relative;
-            width: 100%;
         }
 
         .password-wrapper .form-control {
-            padding-right: 55px;
+            padding-right: 53px;
         }
 
         .toggle-password {
@@ -106,92 +298,161 @@
             right: 8px;
             top: 50%;
             transform: translateY(-50%);
-            width: 40px;
-            height: 40px;
+            width: 39px;
+            height: 39px;
             border: none;
             background: transparent;
-            color: #777;
-            font-size: 20px;
+            color: #839087;
+            font-size: 17px;
             cursor: pointer;
             display: none;
             align-items: center;
             justify-content: center;
-            z-index: 20;
+            z-index: 5;
             padding: 0;
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
         }
 
         .toggle-password:hover {
-            color: #245b37;
+            color: var(--cm-green);
         }
 
         .toggle-password:focus-visible {
-            outline: 2px solid #34834d;
-            border-radius: 5px;
+            outline: 2px solid var(--cm-green);
+            border-radius: 6px;
         }
 
         .toggle-password i {
             pointer-events: none;
         }
 
-        .btn-campus {
-            background: #245b37;
-            color: white;
-            padding: 12px;
-            border: none;
-            border-radius: 10px;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-
-        .btn-campus:hover {
-            background: #194328;
-            color: white;
-        }
+        /* LINKS */
 
         .forgot-link {
-            color: #245b37;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 600;
+            color: var(--cm-green);
+            font-size: 12px;
+            font-weight: 700;
         }
 
         .forgot-link:hover {
+            color: var(--cm-dark);
             text-decoration: underline;
+        }
+
+        .switch-text {
+            color: var(--cm-muted);
+            font-size: 12px;
+            text-align: center;
+            margin-top: 24px;
         }
 
         .switch-link {
-            color: #245b37;
-            font-weight: 600;
-            text-decoration: none;
+            color: var(--cm-green);
+            font-weight: 800;
         }
 
         .switch-link:hover {
+            color: var(--cm-dark);
             text-decoration: underline;
         }
 
-        .market-link {
-            display: block;
-            text-align: center;
-            margin-top: 22px;
-            color: #245b37;
+        /* BUTTON */
+
+        .btn-campus {
+            width: 100%;
+            height: 51px;
+            background: var(--cm-green);
+            color: white;
+            border: none;
+            border-radius: 10px;
             font-size: 13px;
-            text-decoration: none;
+            font-weight: 800;
+            transition: 0.25s;
+        }
+
+        .btn-campus:hover {
+            background: var(--cm-dark);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .btn-campus i {
+            margin-left: 7px;
+        }
+
+        /* AUTH MESSAGE */
+
+        #authMessage {
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        /* BACK LINK */
+
+        .market-link {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            color: #718078;
+            font-size: 12px;
             font-weight: 600;
+            margin-top: 28px;
         }
 
         .market-link:hover {
-            text-decoration: underline;
+            color: var(--cm-green);
         }
 
-        #authMessage {
-            font-size: 13px;
+        /* MOBILE */
+
+        @media (max-width: 850px) {
+
+            .auth-page {
+                grid-template-columns: 1fr;
+            }
+
+            .brand-panel {
+                display: none;
+            }
+
+            .auth-panel {
+                min-height: 100vh;
+                padding: 35px 22px;
+            }
+
+            .mobile-brand {
+                display: flex;
+                justify-content: center;
+                margin-bottom: 40px;
+            }
+
+            .mobile-brand .brand-logo {
+                color: var(--cm-dark);
+            }
+
+            .auth-container {
+                max-width: 450px;
+            }
         }
 
         @media (max-width: 480px) {
-            .auth-card {
-                padding: 27px 20px;
+
+            .auth-panel {
+                padding: 28px 19px;
+            }
+
+            .mobile-brand {
+                margin-bottom: 32px;
+            }
+
+            .auth-heading h2 {
+                font-size: 26px;
+            }
+
+            .auth-heading {
+                margin-bottom: 25px;
             }
         }
     </style>
@@ -199,191 +460,381 @@
 
 <body>
 
-    <div class="auth-card">
+    <main class="auth-page">
 
-        <!-- UCC BRANDING -->
-        <div class="brand-area">
+        <!-- LEFT BRANDING PANEL -->
 
-            <img
-                src="assets/ucc-logo.png"
-                alt="University of Cape Coast Logo"
-                class="ucc-logo"
-            >
+        <section class="brand-panel">
 
-            <h2>CampusMarket</h2>
+            <a href="index.html" class="brand-logo">
 
-            <p>A Student Marketplace for the UCC Community</p>
+                <span class="brand-logo-icon">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </span>
 
-        </div>
+                Campus<span>Market</span>
 
-        <!-- LOGIN SECTION -->
-        <div id="loginSection">
+            </a>
 
-            <h4 class="section-title">Student Login</h4>
 
-            <form id="loginForm">
+            <div class="brand-content">
 
-                <div class="mb-3">
-                    <label for="loginEmail" class="form-label">
-                        Email Address
-                    </label>
+                <span class="brand-label">
+                    YOUR CAMPUS. YOUR MARKETPLACE.
+                </span>
 
-                    <input
-                        type="email"
-                        class="form-control"
-                        id="loginEmail"
-                        placeholder="Enter your email address"
-                        required
-                    >
-                </div>
+                <h1>
+                    Everything Students Need,
+                    <span>In One Place.</span>
+                </h1>
 
-                <div class="mb-2">
-                    <label for="loginPassword" class="form-label">
-                        Password
-                    </label>
+                <p class="brand-description">
+                    Buy what you need, sell what you no longer use,
+                    and discover affordable opportunities within
+                    your campus community.
+                </p>
 
-                    <div class="password-wrapper">
 
-                        <input
-                            type="password"
-                            class="form-control"
-                            id="loginPassword"
-                            placeholder="Enter your password"
-                            required
-                        >
+                <div class="brand-features">
 
-                        <button
-                            type="button"
-                            class="toggle-password"
-                            aria-label="Show password"
-                            aria-controls="loginPassword"
-                            aria-pressed="false"
-                        >
-                            <i class="bi bi-eye" aria-hidden="true"></i>
-                        </button>
+                    <div class="brand-feature">
+
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                        </div>
+
+                        <span>Discover affordable student products</span>
 
                     </div>
+
+
+                    <div class="brand-feature">
+
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-store"></i>
+                        </div>
+
+                        <span>Give your unused items a second life</span>
+
+                    </div>
+
+
+                    <div class="brand-feature">
+
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+
+                        <span>Connect with the campus community</span>
+
+                    </div>
+
                 </div>
 
-                <div class="text-end mb-4">
-                    <a href="#" id="forgotPassword" class="forgot-link">
-                        Forgot Password?
+            </div>
+
+
+            <div class="brand-footer">
+                © 2026 CampusMarket. Built for the student community.
+            </div>
+
+        </section>
+
+
+        <!-- RIGHT AUTHENTICATION PANEL -->
+
+        <section class="auth-panel">
+
+            <div class="auth-container">
+
+
+                <!-- MOBILE BRANDING -->
+
+                <div class="mobile-brand">
+
+                    <a href="index.html" class="brand-logo">
+
+                        <span class="brand-logo-icon">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </span>
+
+                        Campus<span>Market</span>
+
                     </a>
+
                 </div>
 
-                <button type="submit" class="btn btn-campus w-100">
-                    Login
-                </button>
 
-            </form>
+                <!-- LOGIN SECTION -->
 
-            <p class="text-center mt-4 mb-0" style="font-size: 13px;">
-                Don't have an account?
-                <a href="#" id="showSignup" class="switch-link">
-                    Create Account
-                </a>
-            </p>
+                <div id="loginSection">
 
-        </div>
+                    <div class="auth-heading">
 
-        <!-- SIGNUP SECTION -->
-        <div id="signupSection" style="display: none;">
+                        <p class="welcome-label">WELCOME BACK</p>
 
-            <h4 class="section-title">Create Student Account</h4>
+                        <h2>Student Login</h2>
 
-            <form id="signupForm">
-
-                <div class="mb-3">
-                    <label for="signupName" class="form-label">
-                        Full Name
-                    </label>
-
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="signupName"
-                        placeholder="Enter your full name"
-                        required
-                    >
-                </div>
-
-                <div class="mb-3">
-                    <label for="signupEmail" class="form-label">
-                        Email Address
-                    </label>
-
-                    <input
-                        type="email"
-                        class="form-control"
-                        id="signupEmail"
-                        placeholder="Enter your email address"
-                        required
-                    >
-                </div>
-
-                <div class="mb-4">
-                    <label for="signupPassword" class="form-label">
-                        Password
-                    </label>
-
-                    <div class="password-wrapper">
-
-                        <input
-                            type="password"
-                            class="form-control"
-                            id="signupPassword"
-                            placeholder="Create a password"
-                            minlength="6"
-                            required
-                        >
-
-                        <button
-                            type="button"
-                            class="toggle-password"
-                            aria-label="Show password"
-                            aria-controls="signupPassword"
-                            aria-pressed="false"
-                        >
-                            <i class="bi bi-eye" aria-hidden="true"></i>
-                        </button>
+                        <p>
+                            Sign in to your CampusMarket account
+                            to continue exploring.
+                        </p>
 
                     </div>
+
+
+                    <form id="loginForm">
+
+                        <div class="mb-4">
+
+                            <label for="loginEmail" class="form-label">
+                                Email Address
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <i class="fa-regular fa-envelope"></i>
+
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    id="loginEmail"
+                                    placeholder="Enter your email address"
+                                    autocomplete="email"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="mb-3">
+
+                            <label for="loginPassword" class="form-label">
+                                Password
+                            </label>
+
+                            <div class="input-wrapper password-wrapper">
+
+                                <i class="fa-solid fa-lock"></i>
+
+                                <input
+                                    type="password"
+                                    class="form-control"
+                                    id="loginPassword"
+                                    placeholder="Enter your password"
+                                    autocomplete="current-password"
+                                    required
+                                >
+
+                                <button
+                                    type="button"
+                                    class="toggle-password"
+                                    aria-label="Show password"
+                                    aria-controls="loginPassword"
+                                    aria-pressed="false"
+                                >
+                                    <i class="fa-regular fa-eye" aria-hidden="true"></i>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="text-end mb-4">
+
+                            <a href="#" id="forgotPassword" class="forgot-link">
+                                Forgot Password?
+                            </a>
+
+                        </div>
+
+
+                        <button type="submit" class="btn btn-campus">
+
+                            Login to Account
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </button>
+
+                    </form>
+
+
+                    <p class="switch-text">
+
+                        Don't have an account?
+
+                        <a href="#" id="showSignup" class="switch-link">
+                            Create Account
+                        </a>
+
+                    </p>
+
                 </div>
 
-                <button type="submit" class="btn btn-campus w-100">
-                    Create Account
-                </button>
 
-            </form>
+                <!-- SIGNUP SECTION -->
 
-            <p class="text-center mt-4 mb-0" style="font-size: 13px;">
-                Already have an account?
-                <a href="#" id="showLogin" class="switch-link">
-                    Login
+                <div id="signupSection" style="display: none;">
+
+                    <div class="auth-heading">
+
+                        <p class="welcome-label">JOIN THE COMMUNITY</p>
+
+                        <h2>Create Account</h2>
+
+                        <p>
+                            Create your CampusMarket account
+                            and become part of the student marketplace.
+                        </p>
+
+                    </div>
+
+
+                    <form id="signupForm">
+
+                        <div class="mb-3">
+
+                            <label for="signupName" class="form-label">
+                                Full Name
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <i class="fa-regular fa-user"></i>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="signupName"
+                                    placeholder="Enter your full name"
+                                    autocomplete="name"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="mb-3">
+
+                            <label for="signupEmail" class="form-label">
+                                Email Address
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <i class="fa-regular fa-envelope"></i>
+
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    id="signupEmail"
+                                    placeholder="Enter your email address"
+                                    autocomplete="email"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="mb-4">
+
+                            <label for="signupPassword" class="form-label">
+                                Password
+                            </label>
+
+                            <div class="input-wrapper password-wrapper">
+
+                                <i class="fa-solid fa-lock"></i>
+
+                                <input
+                                    type="password"
+                                    class="form-control"
+                                    id="signupPassword"
+                                    placeholder="Create a password"
+                                    minlength="6"
+                                    autocomplete="new-password"
+                                    required
+                                >
+
+                                <button
+                                    type="button"
+                                    class="toggle-password"
+                                    aria-label="Show password"
+                                    aria-controls="signupPassword"
+                                    aria-pressed="false"
+                                >
+                                    <i class="fa-regular fa-eye" aria-hidden="true"></i>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <button type="submit" class="btn btn-campus">
+
+                            Create My Account
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </button>
+
+                    </form>
+
+
+                    <p class="switch-text">
+
+                        Already have an account?
+
+                        <a href="#" id="showLogin" class="switch-link">
+                            Login
+                        </a>
+
+                    </p>
+
+                </div>
+
+
+                <!-- AUTHENTICATION MESSAGE -->
+
+                <div id="authMessage" class="mt-3" role="status" aria-live="polite"></div>
+
+
+                <!-- BACK TO MARKETPLACE -->
+
+                <a href="index.html" class="market-link">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Back to Marketplace
+
                 </a>
-            </p>
 
-        </div>
+            </div>
 
-        <!-- AUTHENTICATION MESSAGE -->
-        <div id="authMessage" class="mt-3"></div>
+        </section>
 
-        <!-- BACK TO MARKETPLACE -->
-        <a href="index.html" class="market-link">
-            ← Back to Marketplace
-        </a>
+    </main>
 
-    </div>
 
-    <!-- SUPABASE CONNECTION -->
+    <!-- SUPABASE -->
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script src="js/supabase.js"></script>
 
     <script src="js/auth.js"></script>
 
-    <!-- SHOW / HIDE PASSWORD FUNCTIONALITY -->
+
+    <!-- PASSWORD VISIBILITY -->
+
     <script>
+
         document.querySelectorAll(".password-wrapper").forEach(function(wrapper) {
 
             const passwordInput = wrapper.querySelector("input");
@@ -391,23 +842,31 @@
             const eyeIcon = toggleButton.querySelector("i");
 
             // Show eye only when password is entered
+
             function updateEyeVisibility() {
 
                 toggleButton.style.display =
                     passwordInput.value.length > 0 ? "flex" : "none";
 
                 if (passwordInput.value.length === 0) {
+
                     passwordInput.type = "password";
-                    eyeIcon.className = "bi bi-eye";
+
+                    eyeIcon.className = "fa-regular fa-eye";
 
                     toggleButton.setAttribute("aria-label", "Show password");
+
                     toggleButton.setAttribute("aria-pressed", "false");
+
                 }
+
             }
 
             passwordInput.addEventListener("input", updateEyeVisibility);
 
+
             // Show or hide password
+
             toggleButton.addEventListener("click", function(event) {
 
                 event.preventDefault();
@@ -417,8 +876,8 @@
                 passwordInput.type = isHidden ? "text" : "password";
 
                 eyeIcon.className = isHidden
-                    ? "bi bi-eye-slash"
-                    : "bi bi-eye";
+                    ? "fa-regular fa-eye-slash"
+                    : "fa-regular fa-eye";
 
                 toggleButton.setAttribute(
                     "aria-label",
@@ -433,6 +892,7 @@
             });
 
         });
+
     </script>
 
 </body>
