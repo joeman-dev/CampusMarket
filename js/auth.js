@@ -1,159 +1,252 @@
 
-// ======================================
-// CAMPUSMARKET - AUTHENTICATION
-// ======================================
+ // ======================================
+ // CAMPUSMARKET - AUTHENTICATION
+ // ======================================
 
+ // GET HTML ELEMENTS
 
-// GET HTML ELEMENTS
+ const loginForm = document.getElementById("loginForm");
+ const signupForm = document.getElementById("signupForm");
 
-const loginForm = document.getElementById("loginForm");
-const signupForm = document.getElementById("signupForm");
+ const loginSection = document.getElementById("loginSection");
+ const signupSection = document.getElementById("signupSection");
 
-const loginSection = document.getElementById("loginSection");
-const signupSection = document.getElementById("signupSection");
+ const showSignup = document.getElementById("showSignup");
+ const showLogin = document.getElementById("showLogin");
 
-const showSignup = document.getElementById("showSignup");
-const showLogin = document.getElementById("showLogin");
+ const authMessage = document.getElementById("authMessage");
+ const logoutButton = document.getElementById("logoutButton");
 
-const authMessage = document.getElementById("authMessage");
 
+ // VERCEL WEBSITE URL
 
-// SWITCH BETWEEN LOGIN AND SIGNUP
+ const WEBSITE_URL = "https://campusmarket-topaz.vercel.app";
 
-showSignup.addEventListener("click", function(event) {
-    event.preventDefault();
 
-    loginSection.style.display = "none";
-    signupSection.style.display = "block";
+ // SWITCH BETWEEN LOGIN AND SIGNUP
 
-    authMessage.textContent = "";
-});
+ showSignup.addEventListener("click", function(event) {
+     event.preventDefault();
 
-showLogin.addEventListener("click", function(event) {
-    event.preventDefault();
+     loginSection.style.display = "none";
+     signupSection.style.display = "block";
 
-    signupSection.style.display = "none";
-    loginSection.style.display = "block";
+     authMessage.textContent = "";
+ });
 
-    authMessage.textContent = "";
-});
+ showLogin.addEventListener("click", function(event) {
+     event.preventDefault();
 
+     signupSection.style.display = "none";
+     loginSection.style.display = "block";
 
-// DISPLAY MESSAGES
+     authMessage.textContent = "";
+ });
 
-function displayMessage(message, type) {
 
-    authMessage.textContent = message;
+ // DISPLAY MESSAGES
 
-    authMessage.className = "mt-3 alert alert-" + type;
-}
+ function displayMessage(message, type) {
+     authMessage.textContent = message;
+     authMessage.className = "mt-3 alert alert-" + type;
+ }
 
 
-// STUDENT REGISTRATION
+ // HANDLE AUTHENTICATION ERRORS
 
-signupForm.addEventListener("submit", async function(event) {
+ function handleAuthError(error) {
 
-    event.preventDefault();
+     console.error("Authentication error:", error);
 
-    const fullName = document.getElementById("signupName").value.trim();
-    const email = document.getElementById("signupEmail").value.trim();
-    const password = document.getElementById("signupPassword").value;
+     if (
+         error.status === 429 ||
+         error.code === "over_email_send_rate_limit"
+     ) {
+         displayMessage(
+             "Too many email requests. Please wait before trying again.",
+             "warning"
+         );
+     } else {
+         displayMessage(error.message, "danger");
+     }
+ }
 
-    displayMessage("Creating your account...", "info");
 
-    const { data, error } = await supabaseClient.auth.signUp({
+ // ======================================
+ // STUDENT REGISTRATION
+ // ======================================
 
-        email: email,
-        password: password,
+ signupForm.addEventListener("submit", async function(event) {
 
-        options: {
-            data: {
-                full_name: fullName
-            },
-            emailRedirectTo: "http://127.0.0.1:5500/login.html"
-        }
+     event.preventDefault();
 
-    });
+     const submitButton = signupForm.querySelector(
+         'button[type="submit"]'
+     );
 
-    if (error) {
+     if (submitButton.disabled) return;
 
-        displayMessage(error.message, "danger");
+     const fullName = document.getElementById("signupName").value.trim();
+     const email = document.getElementById("signupEmail").value.trim();
+     const password = document.getElementById("signupPassword").value;
 
-    } else {
+     submitButton.disabled = true;
+     submitButton.textContent = "Creating Account...";
 
-        displayMessage(
-            "Account created! Check your email if confirmation is required.",
-            "success"
-        );
+     displayMessage("Creating your account...", "info");
 
-        signupForm.reset();
+     try {
 
-        console.log("Registration successful:", data);
+         const { data, error } = await supabaseClient.auth.signUp({
 
-    }
+             email: email,
+             password: password,
 
-});
+             options: {
+                 data: {
+                     full_name: fullName
+                 },
 
+                 emailRedirectTo: `${WEBSITE_URL}/login.html`
+             }
 
-// STUDENT LOGIN
+         });
 
-loginForm.addEventListener("submit", async function(event) {
+         if (error) {
+             handleAuthError(error);
+             return;
+         }
 
-    event.preventDefault();
+         if (data.user && !data.session) {
 
-    const email = document.getElementById("loginEmail").value.trim();
-    const password = document.getElementById("loginPassword").value;
+             displayMessage(
+                 "Account created! Please check your email and confirm your account before logging in.",
+                 "success"
+             );
 
-    displayMessage("Logging you in...", "info");
+         } else {
 
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
+             displayMessage(
+                 "Registration successful! Welcome to CampusMarket.",
+                 "success"
+             );
 
-        email: email,
-        password: password
+         }
 
-    });
+         signupForm.reset();
 
-    if (error) {
+         console.log("Registration result:", data);
 
-        displayMessage(error.message, "danger");
+     } catch (error) {
 
-    } else {
+         handleAuthError(error);
 
-        displayMessage("Login successful! Welcome to CampusMarket.", "success");
+     } finally {
 
-        console.log("Login successful:", data);
+         submitButton.disabled = false;
+         submitButton.textContent = "Create Account";
 
-        setTimeout(function() {
-            window.location.href = "index.html";
-        }, 1500);
+     }
 
-    }
+ });
 
-});
 
+ // ======================================
+ // STUDENT LOGIN
+ // ======================================
 
-// ======================================
-// STUDENT LOGOUT
-// ======================================
+ loginForm.addEventListener("submit", async function(event) {
 
-const logoutButton = document.getElementById("logoutButton");
+     event.preventDefault();
 
-logoutButton.addEventListener("click", async function() {
+     const submitButton = loginForm.querySelector(
+         'button[type="submit"]'
+     );
 
-    const { error } = await supabaseClient.auth.signOut();
+     if (submitButton.disabled) return;
 
-    if (error) {
+     const email = document.getElementById("loginEmail").value.trim();
+     const password = document.getElementById("loginPassword").value;
 
-        displayMessage(error.message, "danger");
+     submitButton.disabled = true;
+     submitButton.textContent = "Logging in...";
 
-    } else {
+     displayMessage("Checking your account...", "info");
 
-        displayMessage("You have successfully logged out.", "success");
+     try {
 
-        setTimeout(function() {
-            window.location.href = "login.html";
-        }, 1000);
+         const { data, error } =
+             await supabaseClient.auth.signInWithPassword({
 
-    }
+                 email: email,
+                 password: password
 
-});
+             });
+
+         if (error) {
+             handleAuthError(error);
+             return;
+         }
+
+         displayMessage(
+             "Login successful! Welcome to CampusMarket.",
+             "success"
+         );
+
+         console.log("Login successful:", data);
+
+         setTimeout(function() {
+             window.location.href = "index.html";
+         }, 1500);
+
+     } catch (error) {
+
+         handleAuthError(error);
+
+     } finally {
+
+         submitButton.disabled = false;
+         submitButton.textContent = "Login";
+
+     }
+
+ });
+
+
+ // ======================================
+ // STUDENT LOGOUT
+ // ======================================
+
+ logoutButton.addEventListener("click", async function() {
+
+     logoutButton.disabled = true;
+
+     try {
+
+         const { error } = await supabaseClient.auth.signOut();
+
+         if (error) {
+             handleAuthError(error);
+             return;
+         }
+
+         displayMessage(
+             "You have successfully logged out.",
+             "success"
+         );
+
+         setTimeout(function() {
+             window.location.href = "login.html";
+         }, 1000);
+
+     } catch (error) {
+
+         handleAuthError(error);
+
+     } finally {
+
+         logoutButton.disabled = false;
+
+     }
+
+ });
